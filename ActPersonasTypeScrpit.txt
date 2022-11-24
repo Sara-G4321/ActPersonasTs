@@ -1,0 +1,140 @@
+//---Actividad typescript---
+class Personas {
+  id: number = 0;
+  name: string = '';
+  lastName: string = '';
+  age: number = 0;
+  arrayPersonas: Array<any> = [];
+}
+
+interface Ipersonas extends Personas {
+  getAll(): void;
+  getById(id: number): void;
+  getByName(name: string): void;
+  createPersona(id: number, name: string, lastName: string, age: number): void;
+  updatePersona(id: number, name: string, lastName: string, age: number): void;
+  deletePersona(id: number): void;
+}
+
+class Repositorio implements Ipersonas {
+  id: number = 0;
+  name: string = '';
+  lastName: string = '';
+  age: number = 0;
+  arrayPersonas = [{
+    id: 1, name: 'Sara', lastName: 'Arteaga', age: 20
+  },
+  { id: 2, name: 'Ricardo', lastName: 'Zabaleta', age: 24 },
+  { id: 3, name: 'Miguel', lastName: 'Vidal', age: 25 },
+  { id: 4, name: 'Alejadro', lastName: 'Otaiza', age: 24 },
+  { id: 5, name: 'Ayleen', lastName: 'Sadrid', age: 22 },]
+
+  getAll(): void {
+    const copyObject = this.arrayPersonas.map((item) => {
+      return item
+    });
+    console.log(copyObject);
+  }
+
+  getById(id: number): void {
+    const buscar = this.arrayPersonas.find(element => element.id == id);
+    console.log(buscar);
+  }
+
+  getByName(name: string): void {
+    const nombre = this.arrayPersonas.find(element => element.name == name);
+    console.log(nombre);
+  }
+
+  createPersona(id: number, name: string, lastName: string, age: number): void {
+    this.arrayPersonas.push({ id: id, name: name, lastName: lastName, age: age })
+    console.log("Agregado correctamente")
+    const copyObject = this.arrayPersonas.map((item) => { return item });
+    console.log(copyObject);
+  }
+
+  updatePersona(id: number, name: string, lastName: string, age: number): void {
+    /*const actualizarIndex = this.arrayPersonas.findIndex(element => element.id == id);
+    this.arrayPersonas[actualizarIndex].name = name, 
+    this.arrayPersonas[actualizarIndex].lastName = lastName,
+    this.arrayPersonas[actualizarIndex].age = age,
+    console.log(this.arrayPersonas[actualizarIndex]);*/
+
+    this.arrayPersonas.splice((id - 1), 1, { id: id, name: name, lastName: lastName, age: age })
+    const copyObject = this.arrayPersonas.map((item) => { return item });
+    console.log(copyObject);
+  }
+
+  deletePersona(id: number): void {
+    const eliminar = this.arrayPersonas.filter((i) => i.id != id);
+    console.log(eliminar);
+  }
+
+
+}//Final clase Repositorio
+
+class MenuPersonas {
+  menu(): number {
+    let menu = Number(window.prompt('Escoge una opción \n'
+      + '1. Mostrar personas \n'
+      + '2. Mostrar persona por id \n'
+      + '3. Mostrar persona por nombre \n'
+      + '4. Crear persona \n'
+      + '5. Actualizar persona \n'
+      + '6. Eliminar persona \n'
+      + '7. Salir \n'
+    ));
+    return menu
+  }
+}
+
+let objRepositorio = new Repositorio();
+let objMenu = new MenuPersonas();
+//objRepositorio.getAll();
+//objRepositorio.getById(2);
+//objRepositorio.getByName('Alejadro');
+//objRepositorio.createPersona(6, 'Michael', 'Morantes', 24);
+//objRepositorio.updatePersona(2, 'Jose', 'Díaz', 24);
+//objRepositorio.deletePersona(5);
+
+let menu: number = 0;
+
+menu = objMenu.menu()
+switch (menu) {
+  case 1:
+    console.log(objRepositorio.getAll());
+    break;
+  case 2:
+    let id = Number(prompt('Digita el id'))
+    objRepositorio.getById(id);
+    break;
+  case 3:
+    let nombre = prompt('Digita el Nombre')
+    objRepositorio.getByName(nombre);
+    break;
+  case 4:
+    let ci = Number(prompt('Digita el Id'))
+    let nom = prompt('Digita el Nombre')
+    let ape = prompt('Digita el Apellido')
+    let ed = prompt('Digita la edad')
+    objRepositorio.createPersona(ci, nom, ape, ed);
+    break;
+  case 5:
+    let ic = Number(prompt('Digita el Id'))
+    let nomb = prompt('Digita el Nombre')
+    let apel = prompt('Digita el Apellido')
+    let eda = prompt('Digita la edad')
+    objRepositorio.updatePersona(ic, nomb, apel, eda);
+    break;
+  case 6:
+    let cod = Number(prompt('Digita el id'))
+    objRepositorio.deletePersona(cod);
+    break;
+  case 7:
+    alert("Salir de la App")
+    menu = 8;
+    break;
+  default:
+    console.log('Opción incorrecta')
+    break;
+}
